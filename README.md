@@ -1,7 +1,6 @@
 # Spark2Dev101
-This document specifies the scope the project and deliverables which are the tools implementation process,
-along with the first week assignment queries and their answers respectively in Scala Spark code.
-Below are the queries from the Sakila learning purpose database:
+This document specifies the scope the project and deliverables which are the translation of below sql queries to Scala Spark code.
+Below are the queries from the Sakila learning purpose database that are selected for this project:
 
 1.Which actors have the first name 'Scarlett'?
 
