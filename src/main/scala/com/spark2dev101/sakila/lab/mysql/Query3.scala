@@ -2,12 +2,15 @@ package com.spark2dev101.sakila.lab.mysql
 
 import java.util.Properties
 
+import com.spark2dev101.sakila.DataModel._
+import com.spark2dev101.sakila.common.Constants.{MYSQL, SPARK}
+import com.typesafe.config.ConfigFactory
 import org.apache.spark.sql.SparkSession
 
 object Query3 extends App {
 
     val spark = SparkSession.builder()
-      .master("local")
+      .master(SPARK.master)
       .appName("Spark Sakila")
       .getOrCreate()
 
@@ -15,17 +18,17 @@ object Query3 extends App {
     //3.How many distinct actors last names are there?
     //select count(DISTINCT last_name) from actor;
 
-
-    val url = "jdbc:mysql://127.0.0.1:3306"
-    val table = "sakila.actor"
+    val config = ConfigFactory.load()
+    val url = config.getString(MYSQL.JDBC)
+    val table = MYSQL.actor_table
     val properties = new Properties()
-    properties.put("user", "root")
-    properties.put("password", "password")
+    properties.put("user", config.getString(MYSQL.USER))
+    properties.put("password", config.getString(MYSQL.PASSWORD))
 
-    Class.forName("com.mysql.jdbc.Driver")
+    Class.forName(MYSQL.driver)
 
     val actorDF = spark.read.jdbc(url, table, properties)
-    actorDF.groupBy("last_name").count().distinct().show()
+    actorDF.groupBy(Actor.last_name.column).count().distinct().show()
 
 
 

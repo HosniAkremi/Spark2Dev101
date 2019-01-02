@@ -2,12 +2,15 @@ package com.spark2dev101.sakila.lab.mysql
 
 import java.util.Properties
 
+import com.spark2dev101.sakila.DataModel
+import com.spark2dev101.sakila.common.Constants.{MYSQL, SPARK}
+import com.typesafe.config.ConfigFactory
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 
 object Query10  extends App {
   val spark = SparkSession.builder()
-    .master("local")
+    .master(SPARK.master)
     .appName("Spark Sakila")
     .getOrCreate()
 
@@ -15,17 +18,18 @@ object Query10  extends App {
   //10.What is that average running time of all the films in the sakila DB?
   //select AVG(length) as average_duration_in_minutes from film;
 
-  val url = "jdbc:mysql://127.0.0.1:3306"
-  val filmTable = "sakila.film"
+  val config = ConfigFactory.load()
+  val url = config.getString(MYSQL.JDBC)
+  val filmTable = MYSQL.film_table
   val properties = new Properties()
-  properties.put("user", "root")
-  properties.put("password", "password")
+  properties.put("user", config.getString(MYSQL.USER))
+  properties.put("password", config.getString(MYSQL.PASSWORD))
 
-  Class.forName("com.mysql.jdbc.Driver")
+  Class.forName(MYSQL.driver)
 
   val filmDF = spark.read.jdbc(url, filmTable, properties)
   val df = filmDF
-    .agg(avg("length").as("Avg_duration_in_min"))
+    .agg(avg(DataModel.Film.length.column).as("Avg_duration_in_min"))
     df.show()
 
 }
