@@ -11,9 +11,7 @@ object Query1 extends App {
     .appName(SPARK.APP_NAME)
     .getOrCreate()
 
-
-  val actorDF = spark.read
-    .option("inferSchema","true").json(COMMON.PATH + "/actor.js")
+  val actorDF = spark.read.json(COMMON.PATH + "/actor.js")
   //actorDF.select("actor_id","first_name", "last_name").where("first_name = 'Scarlett'").show()
     actorDF.show()
 
