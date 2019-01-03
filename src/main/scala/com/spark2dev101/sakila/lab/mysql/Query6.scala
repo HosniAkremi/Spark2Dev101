@@ -3,15 +3,15 @@ package com.spark2dev101.sakila.lab.mysql
 import java.util.Properties
 
 import com.spark2dev101.sakila.DataModel
-import com.spark2dev101.sakila.common.Constants.{MYSQL, SPARK}
+import com.spark2dev101.sakila.common.Constants.{COMMON, MYSQL, SPARK}
 import com.typesafe.config.ConfigFactory
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.SparkSession
 
 object Query6 extends App {
   val spark = SparkSession.builder()
-    .master(SPARK.master)
-    .appName("Spark Sakila")
+    .master(SPARK.MASTER)
+    .appName(SPARK.APP_NAME)
     .getOrCreate()
 
   // Query and answer:
@@ -21,13 +21,13 @@ object Query6 extends App {
   // group by a.actor_id order by film_appearance desc limit 1
   val config = ConfigFactory.load()
   val url = config.getString(MYSQL.JDBC)
-  val actorTable = MYSQL.actor_table
-  val filmActorTable = MYSQL.film_actor_table
+  val actorTable = MYSQL.ACTOR_TABLE
+  val filmActorTable = MYSQL.FILM_ACTOR_TABLE
   val properties = new Properties()
-  properties.put("user", config.getString(MYSQL.USER))
-  properties.put("password", config.getString(MYSQL.PASSWORD))
+  properties.put(COMMON.USER, config.getString(MYSQL.USER))
+  properties.put(COMMON.PASSWORD, config.getString(MYSQL.PASSWORD))
 
-  Class.forName(MYSQL.driver)
+  Class.forName(MYSQL.DRIVER)
 
   val actorDF = spark.read.jdbc(url, actorTable, properties)
   val filmActorDF = spark.read.jdbc(url, filmActorTable, properties)

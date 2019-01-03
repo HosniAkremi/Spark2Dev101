@@ -3,15 +3,15 @@ package com.spark2dev101.sakila.lab.mysql
 import java.util.Properties
 
 import com.spark2dev101.sakila.DataModel
-import com.spark2dev101.sakila.common.Constants.{MYSQL, SPARK}
+import com.spark2dev101.sakila.common.Constants.{COMMON, MYSQL, SPARK}
 import com.typesafe.config.ConfigFactory
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{count, desc}
 
 object Query7 extends  App {
   val spark = SparkSession.builder()
-    .master(SPARK.master)
-    .appName("Spark Sakila")
+    .master(SPARK.MASTER)
+    .appName(SPARK.APP_NAME)
     .getOrCreate()
 
   // Query and answer:
@@ -25,13 +25,13 @@ object Query7 extends  App {
 
   val config = ConfigFactory.load()
   val url = config.getString(MYSQL.JDBC)
-  val inventoryTable = MYSQL.inventory_table
-  val filmTable = MYSQL.film_table
+  val inventoryTable = MYSQL.INVENTORY_TABLE
+  val filmTable = MYSQL.FILM_TABLE
   val properties = new Properties()
-  properties.put("user", config.getString(MYSQL.USER))
-  properties.put("password", config.getString(MYSQL.PASSWORD))
+  properties.put(COMMON.USER, config.getString(MYSQL.USER))
+  properties.put(COMMON.PASSWORD, config.getString(MYSQL.PASSWORD))
 
-  Class.forName(MYSQL.driver)
+  Class.forName(MYSQL.DRIVER)
 
   val inventoryDF = spark.read.jdbc(url, inventoryTable, properties)
   val filmDF = spark.read.jdbc(url, filmTable, properties)
