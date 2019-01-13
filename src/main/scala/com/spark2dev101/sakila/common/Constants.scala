@@ -7,7 +7,7 @@ object Constants {
   object COMMON {
     final val USER = "user"
     final val PASSWORD = "password"
-    final val PATH = "file:///Users/hosniakremi/Documents/Spark2DEV101LearningPlanProject/sakila-db_json"
+    final val PATH = "src/main/resources/data/sakila-db_json"
   }
 
   object MYSQL {
