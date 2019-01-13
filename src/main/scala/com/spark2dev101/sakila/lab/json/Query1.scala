@@ -18,7 +18,7 @@ object Query1 extends App {
     .option("multiLine", true)
     .option("mode", "PERMISSIVE")
     .json(COMMON.PATH + "/actor.js")
-    actorDF.select("actor_id","first_name", "last_name").filter(col("first_name") === "Scarlet").show()
+    //actorDF.select("actor_id","first_name", "last_name").filter(col("first_name") === "Scarlet").show()
 
 
 }
