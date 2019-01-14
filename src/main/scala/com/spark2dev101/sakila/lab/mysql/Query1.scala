@@ -2,10 +2,10 @@ package com.spark2dev101.sakila.lab.mysql
 
 import java.util.Properties
 
-import org.apache.spark.sql.functions.{udf, lit}
+import org.apache.spark.sql.functions.{lit, udf}
 import com.spark2dev101.sakila.DataModel.Actor
 import org.apache.spark.sql.SparkSession
-import com.spark2dev101.sakila.common.Constants.{MYSQL, SPARK, COMMON}
+import com.spark2dev101.sakila.common.Constants.{COMMON, COMMON_UDFS, MYSQL, SPARK}
 import com.typesafe.config._
 
 object Query1 {
@@ -29,14 +29,12 @@ object Query1 {
     properties.put(COMMON.PASSWORD, config.getString(MYSQL.PASSWORD))
 
     Class.forName(MYSQL.DRIVER)
-    val toUpperUDF = udf[String, String](toUpper)
     val actorDF = spark.read.jdbc(url, table, properties)
     actorDF.select(Actor.actor_id.column,Actor.first_name.column, Actor.last_name.column)
       .filter(Actor.first_name.column === lit("Scarlett"))
-      .select(toUpperUDF(Actor.first_name.column))
+      .select(COMMON_UDFS.toUpper(Actor.first_name.name))
       .show()
 
   }
-  def toUpper(name: String):String = name.toUpperCase()
 
 }

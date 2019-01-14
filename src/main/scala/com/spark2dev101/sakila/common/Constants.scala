@@ -29,4 +29,7 @@ object Constants {
       final val APP_NAME = "Spark Sakila"
 
   }
+  object COMMON_UDFS {
+    def toUpper(name: String):String = name.toUpperCase()
+  }
 }
