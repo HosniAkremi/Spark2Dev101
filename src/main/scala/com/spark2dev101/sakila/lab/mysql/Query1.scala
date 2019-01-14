@@ -32,9 +32,9 @@ object Query1 {
     val toUpperUDF = udf[String, String](toUpper)
     val actorDF = spark.read.jdbc(url, table, properties)
     actorDF.select(Actor.actor_id.column,Actor.first_name.column, Actor.last_name.column)
-      .filter(Actor.first_name.column === lit("Scarlett")).select(toUpperUDF(actorDF("first_name"))).show()
-
-
+      .filter(Actor.first_name.column === lit("Scarlett"))
+      .select(toUpperUDF(Actor.first_name.column))
+      .show()
 
   }
   def toUpper(name: String):String = name.toUpperCase()
