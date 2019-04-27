@@ -6,6 +6,7 @@ import com.spark2dev101.sakila.DataModel
 import com.spark2dev101.sakila.common.Constants.{COMMON, MYSQL, SPARK}
 import com.typesafe.config.ConfigFactory
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
 
 object Query11 extends App {
@@ -31,8 +32,11 @@ object Query11 extends App {
 
   val filmDF = spark.read.jdbc(url, filmTable, properties)
   val filmCatDF = spark.read.jdbc(url, film_catTable, properties)
-  val df = filmDF.join(filmCatDF, DataModel.Film.film_id.column)
+  val df = filmDF.join(filmCatDF, Seq(DataModel.Film.film_id.name))
     .groupBy(DataModel.Film_Category.category_id.column)
     .agg(avg(DataModel.Film.length.column).as("average_duration_per_category_in_minutes"))
+    .distinct()
+    Window.partitionBy(DataModel.Film.length.column)
+
   df.show()
 }

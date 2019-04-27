@@ -22,6 +22,8 @@ class DrySpec
 
     val actualDF = sourceDF
 
+    actualDF.show()
+
     assertSmallDataFrameEquality(actualDF, sourceDF)
 
   }
