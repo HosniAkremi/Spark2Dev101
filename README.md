@@ -1,5 +1,6 @@
 # Spark2Dev101
 This document specifies the scope the project and deliverables which are the translation of below sql queries to Scala Spark code.
+Now there are 3 types of datasources, each will have their own README.txt file.
 Below are the queries from the Sakila learning purpose database that are selected for this project:
 
 1.Which actors have the first name 'Scarlett'?
